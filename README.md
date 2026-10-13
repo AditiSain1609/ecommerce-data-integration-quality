@@ -1,6 +1,6 @@
 # E-Commerce Data Integration and Quality System
 
-A locally runnable data engineering portfolio project that ingests related commerce files, standardizes and validates rows, quarantines failures, loads clean records idempotently, and exposes database-backed metrics in Flask. SQLite is the default to make the first run simple; set `DATABASE_URL` to use MySQL with SQLAlchemy/PyMySQL.
+A Python, Flask, and MySQL-compatible ETL pipeline for e-commerce data integration, transformation, and quality validation, with automated error detection, duplicate handling, data quality reports, and an interactive analytics dashboard. This locally runnable data engineering portfolio project ingests related commerce files, standardizes and validates rows, quarantines failures, loads clean records idempotently, and exposes database-backed metrics in Flask. SQLite is the default to make the first run simple; set `DATABASE_URL` to use MySQL with SQLAlchemy/PyMySQL.
 
 ## Architecture
 
