@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="page-heading">
+    <div>
+      <h1>Business dashboard</h1>
+      <p class="page-subtitle">Revenue includes non-cancelled orders using the order header total; order and payment tables are never joined.</p>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    {% for label,value in [('Customers',counts.customers),('Products',counts.products),('Orders',counts.orders),('Revenue', '%.2f'|format(counts.revenue or 0)),('Open data issues',counts.data_quality_issues),('Latest pipeline',counts.latest_run),('Quality score',counts.score|string+'%')] %}
+      <div class="col-sm-6 col-lg-4 col-xl-3">
+        <div class="card kpi">
+          <div>{{label}}</div>
+          <strong>{{value}}</strong>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="row g-4 mt-2">
+    <div class="col-lg-8">
+      <div class="card p-3">
+        <h2>Orders and revenue by month</h2>
+        <div class="chart-frame">
+          <canvas id="trend"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card p-3">
+        <h2>Orders by status</h2>
+        <div class="chart-frame chart-frame-donut">
+          <canvas id="status"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>new Chart(document.getElementById('trend'),{type:'line',data:{labels:{{trend|map(attribute='month')|list|tojson}},datasets:[{label:'Orders',data:{{trend|map(attribute='orders')|list|tojson}},yAxisID:'y'},{label:'Revenue',data:{{trend|map(attribute='revenue')|list|tojson}},yAxisID:'y1'}]},options:{scales:{y:{beginAtZero:true},y1:{position:'right',beginAtZero:true,grid:{drawOnChartArea:false}}}}});new Chart(document.getElementById('status'),{type:'doughnut',data:{labels:{{statuses|map(attribute='label')|list|tojson}},datasets:[{data:{{statuses|map(attribute='value')|list|tojson}}}]}});</script>
+{% endblock %}

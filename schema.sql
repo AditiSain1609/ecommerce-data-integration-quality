@@ -1,0 +1,2 @@
+-- Canonical schema is maintained in src/database.py and is portable to MySQL.
+-- Run `python scripts/initialize_db.py` after configuring DATABASE_URL.

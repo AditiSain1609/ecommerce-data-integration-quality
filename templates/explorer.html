@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="page-heading">
+    <div>
+      <h1>{{entity|title}} explorer</h1>
+      <p class="page-subtitle">Search and inspect records in the {{entity}} dataset.</p>
+    </div>
+  </div>
+
+  <form class="explorer-search input-group mb-3">
+    <input class="form-control" name="q" value="{{q}}" placeholder="Search fields" aria-label="Search records">
+    <button class="btn btn-primary">Search</button>
+  </form>
+
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead><tr>{% for c in columns %}<th>{{c}}</th>{% endfor %}</tr></thead>
+      <tbody>
+        {% for r in rows %}
+          <tr>{% for c in columns %}<td>{{r[c]}}</td>{% endfor %}</tr>
+        {% else %}
+          <tr><td colspan="{{columns|length or 1}}" class="empty-state">No records available.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

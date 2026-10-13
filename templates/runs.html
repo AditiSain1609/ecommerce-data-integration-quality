@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="page-heading page-heading-actions">
+    <div>
+      <h1>Pipeline runs</h1>
+      <p class="page-subtitle">Monitor recent extraction, processing, and load activity.</p>
+    </div>
+    {% if session.get('admin') %}
+      <div class="run-actions">
+        <form method="post">
+          <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+          <button class="btn btn-primary">Run ETL pipeline</button>
+        </form>
+        <form method="post" action="/logout">
+          <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+          <button class="btn btn-outline-secondary">Log out</button>
+        </form>
+      </div>
+    {% else %}
+      <a class="btn btn-primary" href="/login">Log in to run pipeline</a>
+    {% endif %}
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead><tr><th>Run</th><th>Started</th><th>Ended</th><th>Status</th><th>Extracted</th><th>Processed</th><th>Loaded</th><th>Rejected</th><th>Error</th></tr></thead>
+      <tbody>
+        {% for r in rows %}
+          <tr>
+            <td class="text-nowrap">#{{r.run_id}}</td><td class="text-nowrap">{{r.start_time}}</td><td class="text-nowrap">{{r.end_time}}</td>
+            <td><span class="status-pill status-{{r.status|lower}}">{{r.status}}</span></td>
+            <td>{{r.records_extracted}}</td><td>{{r.records_processed}}</td><td>{{r.records_loaded}}</td><td>{{r.records_rejected}}</td><td class="error-cell">{{r.error_message}}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="9" class="empty-state">No pipeline runs yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

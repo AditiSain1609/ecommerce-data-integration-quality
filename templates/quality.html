@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="page-heading">
+    <div>
+      <h1>Data quality issues</h1>
+      <p class="page-subtitle">Review validation and referential integrity findings from the ingestion pipeline.</p>
+    </div>
+  </div>
+
+  <form class="filter-bar row g-2 mb-3">
+    <div class="col-auto">
+      <input class="form-control" name="entity" placeholder="Entity" value="{{entity}}" aria-label="Entity">
+    </div>
+    <div class="col-auto">
+      <select class="form-select" name="severity" aria-label="Severity">
+        <option value="">All severity</option>
+        {% for s in ['low','medium','high'] %}<option {% if severity==s %}selected{% endif %}>{{s}}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="col-auto"><button class="btn btn-primary">Filter</button></div>
+  </form>
+
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead><tr><th>ID</th><th>Entity</th><th>Record</th><th>Type</th><th>Description</th><th>Severity</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for r in rows %}
+          <tr>
+            <td>{{r.issue_id}}</td><td>{{r.entity_name}}</td><td>{{r.record_identifier}}</td><td>{{r.issue_type}}</td><td>{{r.issue_description}}</td>
+            <td><span class="severity severity-{{r.severity|lower}}">{{r.severity}}</span></td>
+            <td><span class="status-pill status-neutral">{{r.resolution_status}}</span></td>
+          </tr>
+        {% else %}
+          <tr><td colspan="7" class="empty-state">No quality issues found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
