@@ -95,7 +95,8 @@ def explorer(entity):
     with engine.connect() as c:
         cols=[item["name"] for item in inspect(engine).get_columns(entity)]
         if query and cols:
-            where=" OR ".join(f"CAST({col} AS TEXT) LIKE :q" for col in cols)
+            cast_type = "CHAR" if engine.dialect.name == "mysql" else "TEXT"
+            where=" OR ".join(f"CAST({col} AS {cast_type}) LIKE :q" for col in cols)
             rows=c.execute(text(f"SELECT * FROM {entity} WHERE {where} LIMIT 100"), {"q":f"%{query}%"}).mappings().all()
         else: rows=c.execute(text(f"SELECT * FROM {entity} LIMIT 100")).mappings().all()
     return render_template("explorer.html", entity=entity, columns=cols, rows=[dict(r) for r in rows], q=query)

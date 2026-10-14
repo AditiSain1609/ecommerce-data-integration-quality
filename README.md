@@ -83,7 +83,7 @@ Production startup refuses a local/SQLite database URL or missing credentials. L
 
 ### GitHub repository setup
 
-The deployment Blueprint must be in a GitHub repository that Render can access. Verify the Git root before publishing: this project currently sits under a Git repository rooted at the user's home directory, with no commits or remote. Do not push that repository. First create an isolated Git repository containing only this project directory, inspect `git status` and `git check-ignore .env`, database files, and backup files, and then connect that repository to GitHub and Render. No repository or deployment has been published from this workspace.
+This project is already in its own Git repository at the project directory, with `main` published to `https://github.com/AditiSain1609/ecommerce-data-integration-quality`. Connect that existing repository to Render and create a Blueprint from its checked-in `render.yaml`; do not initialize or publish a second repository. The Blueprint disables automatic deploys, so review changes and trigger deployments manually from Render.
 
 ## Data and rules
 
@@ -124,7 +124,7 @@ Explain the source contracts, staging boundary, deterministic defects, per-entit
 
 ## GitHub publishing
 
-Create an empty repository on GitHub, then in this project run `git init`, `git add .`, `git commit -m "Build ecommerce data quality system"`, `git branch -M main`, `git remote add origin <repository-url>`, and `git push -u origin main`. Verify `.env` and database files are ignored before pushing.
+The project is published on the `main` branch of `https://github.com/AditiSain1609/ecommerce-data-integration-quality`. For future changes, review `git status` and the diff, run the tests, and push only the intended commits from this project repository. `.env`, virtual environments, local databases, and database dumps are excluded by `.gitignore`; never commit credentials or database certificates.
 
 ## Current limitations
 
